@@ -1,1 +1,53 @@
 @import "tailwindcss";
+
+@keyframes smartFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-14px);
+  }
+}
+
+@keyframes smartPhone {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-1deg);
+  }
+
+  50% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+}
+
+@keyframes smartOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.smart-float {
+  animation: smartFloat 4s ease-in-out infinite;
+}
+
+.smart-float-delay {
+  animation: smartFloat 4.5s ease-in-out infinite 0.8s;
+}
+
+.smart-phone {
+  animation: smartPhone 5s ease-in-out infinite;
+}
+
+.smart-orbit {
+  animation: smartOrbit 18s linear infinite;
+}
+
+.smart-orbit-reverse {
+  animation: smartOrbit 24s linear infinite reverse;
+}
