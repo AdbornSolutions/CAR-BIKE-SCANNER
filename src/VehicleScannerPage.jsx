@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useMemo, useState } from "react";
 import {
   Bike,
@@ -54,6 +55,7 @@ const VehicleScannerPage = () => {
     new URLSearchParams(window.location.search).has("phone")
   );
   const [copied, setCopied] = useState(false);
+  const isScanMode = new URLSearchParams(window.location.search).has("phone");
 
   const scanUrl = useMemo(() => buildScanUrl(generatedProfile), [generatedProfile]);
   const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(
@@ -89,6 +91,78 @@ const VehicleScannerPage = () => {
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
   };
+
+  if (isScanMode) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-[#f6f8fb] px-4 py-6 text-[#111827]">
+        <div className="w-full max-w-[430px] overflow-hidden rounded-2xl border border-black/10 bg-white shadow-xl">
+          <div className="bg-[#111827] px-6 py-7 text-center text-white">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/10">
+              {generatedProfile.vehicleType === "Bike" ||
+              generatedProfile.vehicleType === "Scooter" ? (
+                <Bike size={34} />
+              ) : (
+                <Car size={34} />
+              )}
+            </div>
+            <h1 className="text-2xl font-bold">Vehicle Contact</h1>
+            <p className="mt-1 text-sm text-white/75">
+              Scan and contact vehicle owner
+            </p>
+          </div>
+
+          <div className="px-6 py-6">
+            <div className="mb-5 text-center">
+              <p className="text-sm font-semibold uppercase tracking-[0.14em] text-[#2563eb]">
+                {generatedProfile.vehicleNumber}
+              </p>
+              <h2 className="mt-2 text-2xl font-bold">
+                Need to contact {generatedProfile.ownerName}?
+              </h2>
+              <p className="mt-3 text-sm leading-6 text-gray-600">
+                {generatedProfile.message}
+              </p>
+            </div>
+
+            <div className="mb-5 rounded-xl bg-[#eff6ff] p-4 text-center">
+              <p className="text-xs font-semibold uppercase tracking-[0.14em] text-gray-500">
+                Owner Number
+              </p>
+              <p className="mt-1 text-2xl font-bold text-[#2563eb]">
+                +91 {phoneNumber}
+              </p>
+            </div>
+
+            <div className="space-y-3">
+              <a
+                href={`tel:+91${phoneNumber}`}
+                className="flex h-12 items-center justify-center gap-3 rounded-xl bg-[#2563eb] font-bold text-white transition hover:bg-[#1d4ed8]"
+              >
+                <Phone size={19} />
+                Call Owner
+              </a>
+              <a
+                href={`https://wa.me/91${phoneNumber}?text=${whatsappText}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex h-12 items-center justify-center gap-3 rounded-xl bg-[#16a34a] font-bold text-white transition hover:bg-[#15803d]"
+              >
+                <MessageCircle size={19} />
+                WhatsApp
+              </a>
+              <a
+                href={`sms:+91${phoneNumber}?body=${whatsappText}`}
+                className="flex h-12 items-center justify-center gap-3 rounded-xl bg-[#111827] font-bold text-white transition hover:bg-black"
+              >
+                <Mail size={19} />
+                Send SMS
+              </a>
+            </div>
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#f6f8fb] text-[#111827]">
